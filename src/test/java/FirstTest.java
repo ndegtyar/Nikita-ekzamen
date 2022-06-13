@@ -1,7 +1,7 @@
-import com.codeborne.selenide.Condition;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Owner;
 import io.qameta.allure.Story;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -18,19 +18,23 @@ import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 
 @Owner("ndegtyar")
-@Feature("Быстрое добавление в корзину")
 public class FirstTest {
+
+    @BeforeEach
+    public void beforeTest() {
+        open("http://automationpractice.com/index.php");
+        TestPages.mainPage.headImg()
+                .shouldBe(visible);
+    }
 
     @Test
     @DisplayName("Быстрое добавление товара в корзину")
     public void FirstTest() {
-        step("Зайти на страницу сайта", () -> {
-            open("http://automationpractice.com/index.php");
-        });
-
-        step("Нажать на кнопку быстрого добавления в корзину", () -> {
+        step("Нажать на кнопку быстрого добавления в корзину и проверить сообщение в модальном окне", () -> {
             TestPages.mainPage.productList()
                     .scrollTo();
+            TestPages.mainPage.productList()
+                    .shouldBe(visible);
             TestPages.mainPage.productNumber()
                     .click();
             TestPages.mainPage.addProductInCart()
@@ -39,21 +43,17 @@ public class FirstTest {
     }
 
     @Story("Ввод почты")
-    @DisplayName("Негативные проверки ввода почты")
     @MethodSource("negativeChecks")
-    @ParameterizedTest(name = "{displayName} {0}")
-    public void negativeEmailTest(String type, String nameEmail, String invalidMessage) {
-        step("Зайти на страницу сайта", () -> {
-            open("http://automationpractice.com/index.php");
-        });
-
+    @ParameterizedTest(name = "{0}")
+    @DisplayName("Негативные проверки ввода почты")
+    public void negativeEmailTest(String type, String nameEmail) {
         step("Ввести в поле для почты данные", () -> {
             TestPages.secondPage.emailInput()
                     .scrollTo()
                     .sendKeys(nameEmail);
         });
 
-        step("Нажать кнопку подтверждения", () -> {
+        step("Нажать кнопку подтверждения и проверить сообщение об ошибке", () -> {
             TestPages.secondPage.submitLetter()
                     .click();
             TestPages.secondPage.invalidEmail()

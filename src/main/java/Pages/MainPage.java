@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Selenide.$;
 public class MainPage {
 
     public SelenideElement productList() {
-        return $("[id='homefeatured']").as("блок с товарами");
+        return $("#homefeatured").as("блок с товарами");
     }
 
     public SelenideElement productNumber() {
@@ -18,8 +18,7 @@ public class MainPage {
         return $(".layer_cart_product").as("модальное окно о добавлении товара");
     }
 
-    public SelenideElement productTwo() {
-        return $("[src=http://automationpractice.com/img/p/7/7-home_default.jpg]").as("ссылка на товар для добавления");
+    public SelenideElement headImg() {
+        return $(".logo.img-responsive").as("основной логотип сайта");
     }
-
 }
